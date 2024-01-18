@@ -1,18 +1,11 @@
-package org.jsuarez.springcloud.msvc.courses.entity;
+package org.jsuarez.springcloud.msvc.courses.models;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
 
-@Entity
-@Table(name = "courses")
-public class Course {
+public class UserDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @NotEmpty
     private String name;
+    private String email;
 
     public Long getId() {
         return id;
@@ -28,5 +21,13 @@ public class Course {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

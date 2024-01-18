@@ -1,6 +1,8 @@
 package org.jsuarez.springcloud.msvc.courses.services;
 
-import org.jsuarez.springcloud.msvc.courses.entity.Course;
+import org.jsuarez.springcloud.msvc.courses.clients.UserClientRest;
+import org.jsuarez.springcloud.msvc.courses.models.UserDto;
+import org.jsuarez.springcloud.msvc.courses.models.entity.Course;
 import org.jsuarez.springcloud.msvc.courses.repositories.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -15,6 +17,9 @@ public class CourseServiceImp implements CourseService {
 
     @Autowired
     CourseRepository repository;
+
+    @Autowired
+    UserClientRest client;
 
     @Override
     @Transactional(readOnly = true)
@@ -39,4 +44,21 @@ public class CourseServiceImp implements CourseService {
     public void delete(Long id) {
         repository.deleteById(id);
     }
+
+    @Override
+    public Optional<UserDto> assignUser(UserDto user, Long courseId) {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<UserDto> createUser(UserDto user, Long courseId) {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<UserDto> unassignUser(UserDto user, Long courseId) {
+        return Optional.empty();
+    }
+
+
 }

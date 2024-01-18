@@ -1,7 +1,7 @@
 package org.jsuarez.springcloud.msvc.courses.controllers;
 
 import jakarta.validation.Valid;
-import org.jsuarez.springcloud.msvc.courses.entity.Course;
+import org.jsuarez.springcloud.msvc.courses.models.entity.Course;
 import org.jsuarez.springcloud.msvc.courses.services.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
