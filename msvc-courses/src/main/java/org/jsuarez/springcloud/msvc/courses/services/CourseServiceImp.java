@@ -3,6 +3,7 @@ package org.jsuarez.springcloud.msvc.courses.services;
 import org.jsuarez.springcloud.msvc.courses.clients.UserClientRest;
 import org.jsuarez.springcloud.msvc.courses.models.UserDto;
 import org.jsuarez.springcloud.msvc.courses.models.entity.Course;
+import org.jsuarez.springcloud.msvc.courses.models.entity.CourseUser;
 import org.jsuarez.springcloud.msvc.courses.repositories.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -46,17 +47,50 @@ public class CourseServiceImp implements CourseService {
     }
 
     @Override
+    @Transactional()
     public Optional<UserDto> assignUser(UserDto user, Long courseId) {
+        Optional<Course> o = repository.findById(courseId);
+        if (o.isPresent()) {
+            UserDto userMsvc = client.listById(user.getId());
+            Course course = o.get();
+            CourseUser courseUser = new CourseUser();
+            courseUser.setUserId(userMsvc.getId());
+            course.addCourseUser(courseUser);
+            repository.save(course);
+            return Optional.of(userMsvc);
+        }
         return Optional.empty();
     }
 
     @Override
+    @Transactional()
     public Optional<UserDto> createUser(UserDto user, Long courseId) {
+        Optional<Course> o = repository.findById(courseId);
+        if (o.isPresent()) {
+            UserDto newUserMsvc = client.create(user);
+            Course course = o.get();
+            CourseUser courseUser = new CourseUser();
+            courseUser.setUserId(newUserMsvc.getId());
+            course.addCourseUser(courseUser);
+            repository.save(course);
+            return Optional.of(newUserMsvc);
+        }
         return Optional.empty();
     }
 
     @Override
+    @Transactional()
     public Optional<UserDto> unassignUser(UserDto user, Long courseId) {
+        Optional<Course> o = repository.findById(courseId);
+        if (o.isPresent()) {
+            UserDto userMsvc = client.listById(user.getId());
+            Course course = o.get();
+            CourseUser courseUser = new CourseUser();
+            courseUser.setUserId(userMsvc.getId());
+            course.removeCourseUser(courseUser);
+            repository.save(course);
+            return Optional.of(userMsvc);
+        }
         return Optional.empty();
     }
 

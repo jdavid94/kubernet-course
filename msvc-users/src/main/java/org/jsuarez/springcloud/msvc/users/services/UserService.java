@@ -11,6 +11,7 @@ public interface UserService {
     Optional<User> getById (Long id);
     User save (User user);
     void delete(Long id);
+    List<User> getAllByIds(Iterable<Long> ids);
     Optional<User> getByEmail(String email);
     boolean existsByEmail(String email);
 }

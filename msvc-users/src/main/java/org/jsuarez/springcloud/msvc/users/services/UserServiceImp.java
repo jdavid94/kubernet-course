@@ -21,8 +21,9 @@ public class UserServiceImp implements UserService{
         return (List<User>) repository.findAll();
     }
 
-    @Transactional(readOnly = true)
+
     @Override
+    @Transactional(readOnly = true)
     public Optional<User> getById(Long id) {
         return repository.findById(id);
     }
@@ -37,6 +38,12 @@ public class UserServiceImp implements UserService{
     @Transactional
     public void delete(Long id) {
         repository.deleteById(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<User> getAllByIds(Iterable<Long> ids) {
+        return (List<User>) repository.findAllById(ids);
     }
 
     @Override

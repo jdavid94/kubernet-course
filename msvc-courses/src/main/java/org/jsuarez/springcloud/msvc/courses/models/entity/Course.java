@@ -25,6 +25,9 @@ public class Course {
     @Transient
     private List<UserDto> users;
 
+    public Course() {
+    }
+
     public Course(Long id) {
         courseUsers = new ArrayList<>();
         users = new ArrayList<>();

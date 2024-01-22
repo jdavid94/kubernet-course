@@ -1,6 +1,8 @@
 package org.jsuarez.springcloud.msvc.courses.controllers;
 
+import feign.FeignException;
 import jakarta.validation.Valid;
+import org.jsuarez.springcloud.msvc.courses.models.UserDto;
 import org.jsuarez.springcloud.msvc.courses.models.entity.Course;
 import org.jsuarez.springcloud.msvc.courses.services.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,6 +64,51 @@ public class CourseController {
         if (optionalCourse.isPresent()) {
             service.delete(id);
             return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @PutMapping("/assign-user/{courseId}")
+    public ResponseEntity<?> assignUser(@RequestBody UserDto user, @PathVariable Long courseId) {
+        Optional<UserDto> o = null;
+        try {
+            o = service.assignUser(user, courseId);
+        } catch (FeignException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.singletonMap("Error : ",
+                    "User ID does not exits or Bad Communication " + e.getMessage()));
+        }
+        if (o.isPresent()) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(o.get());
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @PostMapping("/create-user/{courseId}")
+    public ResponseEntity<?> createUser(@RequestBody UserDto user, @PathVariable Long courseId) {
+        Optional<UserDto> o = null;
+        try {
+            o = service.createUser(user, courseId);
+        } catch (FeignException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.singletonMap("Error : ",
+                    "User Cannot Be Created or Bad Communication " + e.getMessage()));
+        }
+        if (o.isPresent()) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(o.get());
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @PutMapping("/unassign-user/{courseId}")
+    public ResponseEntity<?> unassignUser(@RequestBody UserDto user, @PathVariable Long courseId) {
+        Optional<UserDto> o = null;
+        try {
+            o = service.unassignUser(user, courseId);
+        } catch (FeignException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.singletonMap("Error : ",
+                    "User ID does not exits or Bad Communication " + e.getMessage()));
+        }
+        if (o.isPresent()) {
+            return ResponseEntity.status(HttpStatus.OK).body(o.get());
         }
         return ResponseEntity.notFound().build();
     }
