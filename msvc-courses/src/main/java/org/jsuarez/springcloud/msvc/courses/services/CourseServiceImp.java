@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CourseServiceImp implements CourseService {
@@ -36,6 +37,23 @@ public class CourseServiceImp implements CourseService {
 
     @Override
     @Transactional()
+    public Optional<Course> getByIdWithUsers(Long id) {
+        Optional<Course> o = repository.findById(id);
+        if (o.isPresent()) {
+            Course course = o.get();
+            if (!course.getCourseUsers().isEmpty()) {
+                List<Long> ids = course.getCourseUsers().stream().map(c -> c.getUserId())
+                        .collect(Collectors.toList());
+                List<UserDto> users = client.findAllByIds(ids);
+                course.setUsers(users);
+            }
+            return Optional.of(course);
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    @Transactional()
     public Course save(Course course) {
         return repository.save(course);
     }
@@ -44,6 +62,12 @@ public class CourseServiceImp implements CourseService {
     @Transactional()
     public void delete(Long id) {
         repository.deleteById(id);
+    }
+
+    @Override
+    @Transactional()
+    public void deleteCourseUserById(Long id) {
+        repository.deleteCourseUserById(id);
     }
 
     @Override

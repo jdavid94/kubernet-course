@@ -10,8 +10,10 @@ public interface CourseService {
 
     List<Course> getAll();
     Optional<Course> getById(Long id);
+    Optional<Course> getByIdWithUsers(Long id);
     Course save(Course course);
     void delete(Long id);
+    void deleteCourseUserById(Long id);
 
     Optional<UserDto> assignUser(UserDto user, Long courseId);
     Optional<UserDto> createUser(UserDto user, Long courseId);
